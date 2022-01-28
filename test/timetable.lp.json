@@ -1,0 +1,20 @@
+{
+  "CLINGO": {
+    "name": "CLINGO",
+    "time": 5.157772064208984,
+    "optimum": 31915100797,
+    "status": "OPTIMUM FOUND"
+  },
+  "MAXHS": {
+    "name": "MAXHS",
+    "time": 30.032387733459473,
+    "optimum": 55943206100,
+    "status": "SATISFIABLE"
+  },
+  "OPENWBO": {
+    "name": "OPENWBO",
+    "time": 8.422390937805176,
+    "optimum": 31915373099,
+    "status": "OPTIMUM FOUND"
+  }
+}
