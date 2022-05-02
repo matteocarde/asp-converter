@@ -1,5 +1,7 @@
 import sys
 import re
+
+import time
 from pypblib import pblib
 
 #
@@ -11,9 +13,10 @@ _sum_soft_weights = 1
 
 #
 ###############################################################################
-
+TIMEOUT = 60
 def read_opb(path):
 
+    a = time.time()
     config = pblib.PBConfig()
     aux = pblib.AuxVarManager(1)
     hard = pblib.VectorClauseDatabase(config)
@@ -22,6 +25,9 @@ def read_opb(path):
 
     f = open(path,'r')
     for line in f:
+
+        if time.time() - a > TIMEOUT:
+            raise Exception
 
         if len(line) == 0: continue
         if '#variable=' in line:
@@ -44,9 +50,11 @@ def read_opb(path):
 ###############################################################################
 
 def write_cnf(file_path, aux, soft, hard):
-
+    a = time.time()
     with open(file_path, 'w') as f:
         for i, e in enumerate(soft):
+            if time.time() - a > TIMEOUT:
+                raise Exception
             if(i%2 == 0):
                 global _sum_soft_weights
                 _sum_soft_weights += abs(int(soft[i]))
@@ -60,12 +68,18 @@ def write_cnf(file_path, aux, soft, hard):
                     f.write(str(abs(int(soft[i]))) + " " + str(int(soft[i+1])) + " 0\n")
                 else:
                     f.write(str(abs(int(soft[i]))) + " " + str(-int(soft[i+1])) + " 0\n")
+            if time.time() - a > TIMEOUT:
+                raise Exception
 
         v_form = hard.get_clauses()
 
         for c in v_form:
             tmp = ""
+            if time.time() - a > TIMEOUT:
+                raise Exception
             for i in c:
+                if time.time() - a > TIMEOUT:
+                    raise Exception
                 tmp += " " + str(i);
             f.write(str(_sum_soft_weights) + " " + tmp + " 0\n")
 
